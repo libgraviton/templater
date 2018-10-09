@@ -50,6 +50,11 @@ class Generator
     private $templateDir;
 
     /**
+     * @var string
+     */
+    private $banner;
+
+    /**
      * Generator constructor.
      *
      * @param OutputInterface $output        output
@@ -69,6 +74,11 @@ class Generator
             $this->templateDir = $this->baseDir . $this->configuration['templateDirectory'];
         } else {
             throw new \Exception('No templateDirectory specified in configuration');
+        }
+
+        // is there a banner?
+        if (isset($this->configuration['bannerFile'])) {
+            $this->banner = file_get_contents($this->baseDir.$this->configuration['bannerFile']);
         }
 
         $loader = new \Twig_Loader_Filesystem($this->templateDir);
@@ -101,6 +111,9 @@ class Generator
             $templates = $this->getTemplates($data['ignoreFiles']);
             foreach ($templates as $templatePath) {
                 $content = $this->twig->render(basename($templatePath), $data['templateData']);
+                if (!is_null($this->banner)) {
+                    $content = $this->banner . $content;
+                }
                 $targetFilename = $outputDirectory.basename($templatePath);
                 $this->fs->dumpFile($outputDirectory.basename($templatePath), $content);
                 $this->output->writeln('Wrote file '.$targetFilename);
@@ -120,6 +133,7 @@ class Generator
         $templates = [];
         $finder = Finder::create()
             ->files()
+            ->depth(0)
             ->in($this->templateDir)
             ->ignoreDotFiles(true)
             ->exclude('_*');

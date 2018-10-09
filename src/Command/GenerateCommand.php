@@ -4,12 +4,11 @@
  */
 namespace Graviton\Templater\Command;
 
+use Graviton\Templater\Generator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Finder\Finder;
 
 /**
  * @author   List of contributors <https://github.com/libgraviton/templater/graphs/contributors>
@@ -28,7 +27,12 @@ class GenerateCommand extends Command
     {
         $this
             ->setName('generate')
-            ->setDescription('Generates files from templates and a configuration.');
+            ->setDescription('Generates files from templates and a configuration.')
+            ->addArgument(
+                'configuration',
+                InputArgument::REQUIRED,
+                'Path to a configuration YAML file.'
+            );
     }
 
     /**
@@ -41,5 +45,7 @@ class GenerateCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $generator = new Generator($output, $input->getArgument('configuration'));
+        $generator->generate();
     }
 }

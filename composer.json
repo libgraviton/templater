@@ -1,0 +1,24 @@
+{
+    "name": "graviton/templater",
+    "license": "MIT",
+    "require": {
+        "symfony/yaml": "^4.0",
+        "symfony/filesystem": "^4.0",
+        "symfony/console": "^4.0",
+        "symfony/finder": "^4.0",
+        "psr/log": "^1.0",
+        "twig/twig": "^2.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {"Graviton\\Templater\\": "src/"}
+    },
+    "authors": [
+        {
+            "name": "List of contributors",
+            "homepage": "https://github.com/libgraviton/templater/graphs/contributors"
+        }
+    ]
+}

@@ -15,7 +15,4 @@ GROUPNAME=$(cut -d: -f1 < <(getent group ${PGID}))
 adduser -h /app -D -H -s /bin/ash -u ${PUID} -G ${GROUPNAME} app
 adduser app users
 
-echo ${PUID}
-echo ${PGID}
-
 exec su-exec app "$@"

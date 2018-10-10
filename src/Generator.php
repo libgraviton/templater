@@ -138,8 +138,12 @@ class Generator
             ->ignoreDotFiles(true)
             ->exclude('_*');
 
-        if (!is_null($ignoreFiles)) {
-            $finder = $finder->exclude($ignoreFiles);
+        if (is_array($ignoreFiles)) {
+            foreach ($ignoreFiles as $name) {
+                $finder = $finder->notName($name);
+            }
+        } elseif (is_string($ignoreFiles)) {
+            $finder = $finder->notName($ignoreFiles);
         }
 
         foreach ($finder as $file) {
